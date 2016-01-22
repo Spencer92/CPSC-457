@@ -1,0 +1,18 @@
+threadtest.o: threadtest.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/syscalls.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/kostypes.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/pthread.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/syscalls.h
+systest.o: systest.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/syscalls.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/kostypes.h
+manythread.o: manythread.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/syscalls.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/kostypes.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/pthread.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../include/syscalls.h
+kbloop.o: kbloop.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/user/../testoptions.h

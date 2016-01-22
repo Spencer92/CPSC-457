@@ -1,0 +1,10 @@
+pthread.o: pthread.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../include/syscalls.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../include/kostypes.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../include/pthread.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../include/syscalls.h
+libKOS.o: libKOS.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../include/syscalls.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/ulib/../include/kostypes.h
