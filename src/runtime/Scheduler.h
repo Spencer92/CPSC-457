@@ -34,7 +34,7 @@ class Scheduler {
   volatile mword resumption;
 
   Scheduler* partner;
-
+  
   template<typename... Args>
   inline void switchThread(Scheduler* target, Args&... a);
 
@@ -51,6 +51,7 @@ public:
   void suspend(BasicLock& lk);
   void suspend(BasicLock& lk1, BasicLock& lk2);
   void terminate() __noreturn;
+  void yield();
 };
 
 #endif /* _Scheduler_h_ */
