@@ -25,12 +25,12 @@ int signum = 0;
 
 extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-
+  return syscallStub(SyscallNum::sched_getaffinity,pid,cpusetsize,mword(mask));
 }
 
 extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  return syscallStub(SyscallNum::sched_getaffinity);
+  return syscallStub(SyscallNum::sched_getaffinity,pid,cpusetsize,mword(mask));
 }
 
 
