@@ -27,6 +27,9 @@
 #include "syscalls.h"
 #include "pthread.h"
 
+#define MAX_CORES 15
+#define CLEAR_BITS 0x000000000000000F
+
 /******* libc functions *******/
 
 // for C-style 'assert' (e.g., from malloc.c)
@@ -44,7 +47,29 @@ extern "C" void abort() {
 
 extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  //TODO write
+  if(pid != 0)
+    {
+      if(cpusetsize > MAX_CORES)
+	{
+	  return EINVALID;
+	  //error EINVALID
+	}
+      else
+	{
+	  *mask = cpusetsize;
+	  *mask &= CLEAR_BITS;
+	}
+      
+      //no error 
+    }
+  else
+    {
+      return EPERM;
+      //error EPERM
+    }
+
+      
+   
 }
 
 extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
