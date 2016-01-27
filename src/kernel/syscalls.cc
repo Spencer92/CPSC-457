@@ -41,6 +41,18 @@ extern "C" void abort() {
   unreachable();
 }
 
+
+extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
+{
+  //TODO write
+}
+
+extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
+{
+  //TODO write
+}
+
+
 extern "C" void free(void* ptr) { MemoryManager::legacy_free(ptr); }
 extern "C" void _free_r(_reent* r, void* ptr) { free(ptr); }
 extern "C" void* malloc(size_t size) { return MemoryManager::legacy_malloc(size); }
@@ -246,6 +258,8 @@ void* __dso_handle = nullptr;
 typedef ssize_t (*syscall_t)(mword a1, mword a2, mword a3, mword a4, mword a5);
 static const syscall_t syscalls[] = {
   syscall_t(_exit),
+  syscall_t(sched_setaffinity),
+  syscall_t(sched_getaffinity),
   syscall_t(open),
   syscall_t(close),
   syscall_t(read),
