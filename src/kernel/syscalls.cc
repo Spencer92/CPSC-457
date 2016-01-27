@@ -27,6 +27,18 @@
 
 /******* libc functions *******/
 
+extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
+{
+  
+}
+
+extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
+{
+  
+}
+
+
+
 // for C-style 'assert' (e.g., from malloc.c)
 extern "C" void __assert_func( const char* const file, size_t line,
   const char* const func, const char* const expr ) {
@@ -259,6 +271,8 @@ static const syscall_t syscalls[] = {
   syscall_t(semP),
   syscall_t(semV),
   syscall_t(privilege),
+  syscall_t(sched_setaffinity),
+  syscall_t(sched_getaffinity),
   syscall_t(_init_sig_handler)
 };
 

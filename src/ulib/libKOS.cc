@@ -1,4 +1,4 @@
-/******************************************************************************
+/*****************************************************************************
     Copyright © 2012-2015 Martin Karsten
 
     This program is free software: you can redistribute it and/or modify
@@ -19,6 +19,31 @@
 #include <string.h>
 
 int signum = 0;
+
+/*
+
+REMEMBER MEEE
+
+ */
+
+
+extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
+{
+
+}
+
+extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
+{
+  return syscallStub(SyscallNum::sched_getaffinity);  
+}
+
+
+
+/*
+
+REMEMBER MEE
+
+ */
 
 extern "C" void _KOS_sigwrapper();
 
