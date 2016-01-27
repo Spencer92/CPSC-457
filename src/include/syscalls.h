@@ -1,5 +1,5 @@
 #ifndef _syscalls_h_
-#define _syscalls_h_ 1
+#define _syscalls_h_
 
 #include "kostypes.h"
 
@@ -21,34 +21,40 @@ extern "C" long get_core_count();
 
 extern "C" int privilege(void*, mword, mword, mword, mword);
 
+extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask);
+extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask);
+
+
 namespace SyscallNum {
 
-enum : mword {
-  _exit = 0,
-  open,
-  close,
-  read,
-  write,
-  lseek,
-  get_core_count,
-  getpid,
-  getcid,
-  usleep,
-  _mmap,
-  _munmap,
-  _pthread_create,
-  pthread_exit,
-  pthread_join,
-  pthread_kill,
-  pthread_self,
-  semCreate,
-  semDestroy,
-  semP,
-  semV,
-  privilege,
-  _init_sig_handler,
-  max
-};
+  enum : mword {
+    _exit = 0,
+      sched_setaffinity,
+      sched_getaffinity,
+      open,
+      close,
+      read,
+      write,
+      lseek,
+      get_core_count,
+      getpid,
+      getcid,
+      usleep,
+      _mmap,
+      _munmap,
+      _pthread_create,
+      pthread_exit,
+      pthread_join,
+      pthread_kill,
+      pthread_self,
+      semCreate,
+      semDestroy,
+      semP,
+      semV,
+      privilege,
+      _init_sig_handler,
+      max
+      };
 
 };
 
