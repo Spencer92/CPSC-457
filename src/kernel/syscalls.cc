@@ -27,8 +27,6 @@
 #include "syscalls.h"
 #include "pthread.h"
 
-#define MAX_CORES 15
-#define CLEAR_BITS 0x000000000000000F
 
 /******* libc functions *******/
 
@@ -47,17 +45,15 @@ extern "C" void abort() {
 
 extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  if(pid != 0)
+  if(pid == 0)
     {
-      if(cpusetsize > MAX_CORES)
+      if(cpusetsize > sizeof(cpu_set_t))
 	{
-	  return EINVALID;
-	  //error EINVALID
+	  return EINVAL;
 	}
       else
 	{
-	  *mask = cpusetsize;
-	  *mask &= CLEAR_BITS;
+	  Runtime::getCurrThread()->setAffinityMask(*mask);
 	}
       
       //no error 
@@ -65,7 +61,6 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
   else
     {
       return EPERM;
-      //error EPERM
     }
 
       
@@ -74,7 +69,15 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 
 extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  //TODO write
+  if(pid != 0)
+    {
+      return EPERM;
+    }
+  else
+    {
+      return Runtime::getCurrThread()->getAffinityMask();
+       
+    }
 }
 
 
