@@ -70,14 +70,24 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 
 extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  if(pid != 0)
+
+    if(pid == 0)
     {
-      return EPERM;
+      KOUT::outl("pid is \n",pid);
+    }
+  else
+    {
+      KOUT::outl("pid isn't 0 but \n",pid);
+      }
+  if(pid == 0)
+    {
+      KOUT::outl("pid is ",pid," but should be 0\n");
+           return Runtime::getCurrThread()->getAffinityMask();
     }
   else
     {
 
-      return Runtime::getCurrThread()->getAffinityMask();
+      return -1;
       //      Scheduler::yield();
     }
 }
