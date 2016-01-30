@@ -20,6 +20,14 @@
 #include "runtime/Thread.h"
 #include "kernel/Output.h"
 
+#define CORE_ONE 0x0000000000000001
+#define CORE_TWO 0x0000000000000002
+#define CORE_THREE 0x0000000000000004
+#define CORE_FOUR 0x0000000000000008
+#define NUM_CORES 4
+
+
+
 Scheduler::Scheduler() : readyCount(0), preemption(0), resumption(0), partner(this) {
   Thread* idleThread = Thread::create((vaddr)idleStack, minimumStack);
   idleThread->setAffinity(this)->setPriority(idlePriority);
@@ -122,19 +130,68 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
   //Scheduler* target =  Runtime::getCurrThread()->getAffinity();
   Scheduler *target = nullptr;
   mword affinityMask = Runtime::getCurrThread()->getAffinityMask();
+  Scheduler *sched[NUM_CORES];
+  Scheduler *sched_current = nullptr;
 
+  
+  for(int i = 0; i < NUM_CORES; i++)
+    {
+      sched[i] = nullptr;
+    }
+  
+  
   if( affinityMask == 0 ) {
 	  /* use Martin's code when no affinity is set via bit mask */
 	  target =  Runtime::getCurrThread()->getAffinity();
-   }  else {
-	  /* CPSC457l: Add code here to scan the affinity mask
+
+  }  else {
+
+
+    for(int i = 1; i < NUM_CORES+1; i*=2)
+      {
+	if(affinityMask &= i == i)
+	  {
+	    sched[i-1] = Machine::getScheduler(i);
+	  }
+
+      }
+
+    for(int i = 0; i < NUM_CORES; i++)
+      {
+	if(sched[i] != nullptr)
+	  {
+	    if(sched_current == nullptr)
+	      {
+		sched_current = sched[i];
+	      }
+	    else
+	      {
+		if(sched_current->readyCount > sched[i]->readyCount)
+		  {
+		    sched_current = sched[i];
+		  }
+	      }
+	  }
+	
+      }
+    
+    target = sched_current;
+    
+
+    
+    /*
+1010
+     */
+
+
+    /* CPSC457l: Add code here to scan the affinity mask
       * and select the processor with the smallest ready count.
       * Set the scheduler of the selected processor as target
       * switchThread(target) migrates the current thread to 
       * specified target's ready queue
       */
 
-   } 
+  } 
 
 #if TESTING_ALWAYS_MIGRATE
   if (!target) target = partner;
