@@ -138,22 +138,26 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
     {
       sched[i] = nullptr;
     }
-  
+
   
   if( affinityMask == 0 ) {
 	  /* use Martin's code when no affinity is set via bit mask */
 	  target =  Runtime::getCurrThread()->getAffinity();
 
+
   }  else {
 
+    Scheduler::yield();
 
-    for(int i = 1; i < NUM_CORES+1; i*=2)
+
+    mword j = 1;
+    for(mword i = 0; i < NUM_CORES; i++)
       {
-	if(affinityMask &= i == i)
+	if(affinityMask &= j == j)
 	  {
-	    sched[i-1] = Machine::getScheduler(i);
+	    sched[i] = Machine::getScheduler(i);
 	  }
-
+	j*=2;
       }
 
     for(int i = 0; i < NUM_CORES; i++)

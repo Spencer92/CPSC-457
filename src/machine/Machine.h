@@ -25,6 +25,7 @@ class Thread;
 class Machine : public NoObject {
   friend void initGdb(mword); // initGdb calls setupIDT to redirect exception handlers
 
+  
   static mword processorCount;
 
   static void setupIDT(uint32_t, paddr, uint32_t = 0)  __section(".boot.text");
@@ -38,6 +39,7 @@ class Machine : public NoObject {
   static void bootCleanup();
 
 public:
+  static Scheduler* getScheduler(mword core);
   static void initAP(mword idx)                        __section(".boot.text");
   static void initBSP(mword mag, vaddr mb, mword idx)  __section(".boot.text");
   static void bootMain();
@@ -54,6 +56,9 @@ public:
 };
 
 void Breakpoint2(vaddr ia = 0) __ninline;
+
+
+
 
 static inline void Breakpoint(vaddr ia = 0) {
   asm volatile( "xchg %%bx, %%bx" ::: "memory" );

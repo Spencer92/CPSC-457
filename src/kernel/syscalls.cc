@@ -54,6 +54,7 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
       else
 	{
 	  Runtime::getCurrThread()->setAffinityMask(*mask);
+	  //	  Scheduler::yield();
 	}
       
       //no error 
@@ -75,8 +76,9 @@ extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
     }
   else
     {
+
       return Runtime::getCurrThread()->getAffinityMask();
-       
+      //      Scheduler::yield();
     }
 }
 

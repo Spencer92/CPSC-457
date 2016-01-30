@@ -69,7 +69,7 @@ void kosMain() {
 #if TESTING_PING_LOOP
   for (;;) {
     Timeout::sleep(Clock::now() + 1000);
-    KOUT::outl("...ping...");
+    //KOUT::outl("...ping...");
   }
 #endif
 }

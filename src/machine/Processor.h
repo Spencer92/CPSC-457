@@ -89,6 +89,16 @@ class Processor {
   }
 
 public:
+
+  static Scheduler* getSchedulerProcess()
+  {
+        Scheduler* x;
+    asm volatile("movq %%gs:%c1, %0" : "=r"(x) : "i"(offsetof(Processor, scheduler)));
+    return x;
+
+  }
+
+  
   Processor() : lockCount(1), currThread(nullptr), currAS(nullptr),
     userPI(nullptr), kernPI(nullptr), scheduler(nullptr),
     frameManager(nullptr), index(0), apicID(0), systemID(0) {}
@@ -110,6 +120,7 @@ class LocalProcessor {
   }
 
 public:
+  
   static void initInterrupts(bool irqs);
   static mword getLockCount() {
     mword x;
