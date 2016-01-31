@@ -30,6 +30,9 @@
 
 /******* libc functions *******/
 
+
+
+
 // for C-style 'assert' (e.g., from malloc.c)
 extern "C" void __assert_func( const char* const file, size_t line,
   const char* const func, const char* const expr ) {
@@ -45,16 +48,26 @@ extern "C" void abort() {
 
 extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
+  Scheduler* scheduler = new Scheduler();
+  
   if(pid == 0)
     {
+      KOUT::outl("pid = 0");
       if(cpusetsize > sizeof(cpu_set_t))
 	{
+	  KOUT::outl("cpusetsize > sizeof(cpu_set_t)");
 	  return EINVAL;
 	}
       else
 	{
+	  KOUT::outl("Before yield in setaffinity");
+	  scheduler->yield();
+	  KOUT::outl("After yield in setaffinity");
+	  KOUT::outl("Getting the runtime mask");
 	  Runtime::getCurrThread()->setAffinityMask(*mask);
-	  //	  Scheduler::yield();
+	  KOUT::outl("Finished getting runtime mask");
+
+	  LocalProcessor::getScheduler()->yield();
 	}
       
       //no error 
@@ -70,7 +83,8 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 
 extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-
+  Scheduler* scheduler = new Scheduler();
+  int getMask;
     if(pid == 0)
     {
       KOUT::outl("pid is \n",pid);
@@ -81,8 +95,15 @@ extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
       }
   if(pid == 0)
     {
+      KOUT::outl("BEFORE YIELD IN GETAFFINITY");
+      //scheduler->yield();
+      KOUT::outl("AFTER YIELD IN GETAFFINITY");
       KOUT::outl("pid is ",pid," but should be 0\n");
-           return Runtime::getCurrThread()->getAffinityMask();
+      getMask = Runtime::getCurrThread()->getAffinityMask();
+      
+      
+      return getMask;//Runtime::getCurrThread()->getAffinityMask();
+       
     }
   else
     {

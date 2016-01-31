@@ -70,32 +70,41 @@ int main() {
    }else {
       //cout << "sched_setaffinity successful" << endl; 
    	whereAmI();
-   }
+	}*/
 
    cout << endl << "SCHED_SETAFFINITY TEST 3" << endl;
    err = 5;
    affinityMask = MASK1;
-   //cout << "Setting Mask to "<< affinityMask << " for pid 0 " << endl; 
+   cout << "Setting Mask to "<< affinityMask << " for pid 0 " << endl;
+   cout << "Entering sched_setaffinity for the third time" << endl;
    err = sched_setaffinity( 0, sizeof(cpu_set_t), &affinityMask );
+   cout << "Exiting sched_setaffinity for the third time" << endl;
    if( err == -1 ){
       cout << "sched_setaffinity unsuccessful" << endl; 
    }else{
       //cout << "sched_setaffinity successful " << endl; 
    	whereAmI();
 	}
-  */
-
+   cout << "Passed third if else" << endl;
+   
+   /*   int checker;
    cout << endl << "SCHED_SETAFFINITY TEST 4" << endl;
    err = 5;
    affinityMask = MASK5;
    //cout << "Setting Mask to "<< affinityMask << " for pid 0 " << endl; 
+   cout << "about to enter sched_setaffinity" << endl;
    err = sched_setaffinity( 0, sizeof(cpu_set_t), &affinityMask );
+   cout << "exited sched_setaffinity" << endl;
+   cin >> checker;
    if( err == -1 ){
+     cout << "went into third if statement" << endl;
       cout << "sched_setaffinity unsuccessful" << endl; 
    }else{
-      //cout << "sched_setaffinity successful" << endl; 
+      //cout << "sched_setaffinity successful" << endl;
+     cout << "went into third else statment" << endl;
    	whereAmI();
 	}
+	cin >> checker;*/
    pthread_t t1;
    pthread_create(&t1, nullptr, dummy, nullptr);
    whereAmI();
@@ -105,7 +114,10 @@ int main() {
    /* sched_getaffinity */
    cout << endl << "SCHED_GETAFFINITY TEST 1" << endl;
    err = 5;
+   cout << "about to enter sched_getaffinity" << endl;
    err = sched_getaffinity( 2, sizeof(cpu_set_t), &affinityMask );
+   cout << "exited sched_getaffinity" << endl;
+
    if( err == -1 ){
       cout << "sched_getaffinity unsuccessful" << endl; 
    }else{
