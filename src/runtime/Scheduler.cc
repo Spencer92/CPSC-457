@@ -19,6 +19,7 @@
 #include "runtime/Stack.h"
 #include "runtime/Thread.h"
 #include "kernel/Output.h"
+#include "include/syscalls.h"
 //#include <iostream>
 
 #define CORE_ONE 0x0000000000000001
@@ -153,42 +154,38 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
 
     //    Scheduler::yield();
 
-
-    mword j = 1;
-    for(mword i = 0; i < NUM_CORES; i++)
+    if(affinityMask != 1)
       {
-	if((affinityMask & j) == j)
-	  {
-	    //	    Scheduler::yield();
-	    if(readyCountCheck2 != i)
-	      {
-		KOUT::outl("Core running is ",i);
-		readyCountCheck2 = i;
-	      }
-	    sched[i] = Machine::getScheduler(i);
-	    if(readyCountCheck != sched[i]->readyCount)
-	      {
-		KOUT::outl(sched[i]->readyCount,": sched[",i,"]->readyCount");
-		readyCountCheck = sched[i]->readyCount;
-	      }
-	  }
-	j*=2;
+	KOUT::outl("affinityMask is ",affinityMask);
       }
+    
+     mword j = 1;
+     for(mword i = 0; i < NUM_CORES; i++)
+       {
+     	if((affinityMask & j) == j)
+     	  {
+     	    //	    while(getcid() != 0/*(affinityMask & j)*/);
+	    
+     	    sched[i] = Machine::getScheduler(j);
+     	  }
+
+     	j*=2;
+       }
 
     int current;
     
-    for(int i = 0; i < NUM_CORES; i++)
+    for(mword i = 0; i < NUM_CORES; i++)
       {
 	if(sched[i] != nullptr)
 	  {
 	    if(sched_current == nullptr)
 	      {
 		sched_current = sched[i];
-		current = i;
+		//		current = i;
 	      }
 	    else
 	      {
-		if(sched_current->readyCount >= sched[i]->readyCount)
+		if(sched_current->readyCount > sched[i]->readyCount)
 		  {
 		    //KOUT::outl("readyCount changed from sched[",current,"] to sched[",i,"]");
 		    sched_current = sched[i];

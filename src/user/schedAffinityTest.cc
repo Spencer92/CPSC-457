@@ -104,12 +104,12 @@ int main() {
      cout << "went into third else statment" << endl;
    	whereAmI();
 	}
-	cin >> checker;*/
+	cin >> checker;
    pthread_t t1;
    pthread_create(&t1, nullptr, dummy, nullptr);
    whereAmI();
    whereAmI();
-   whereAmI();
+   whereAmI();*/
 
    /* sched_getaffinity */
    cout << endl << "SCHED_GETAFFINITY TEST 1" << endl;

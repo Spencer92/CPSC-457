@@ -61,7 +61,7 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
       else
 	{
 	  KOUT::outl("Before yield in setaffinity");
-	  scheduler->yield();
+	  //	  scheduler->yield();
 	  KOUT::outl("After yield in setaffinity");
 	  KOUT::outl("Getting the runtime mask");
 	  Runtime::getCurrThread()->setAffinityMask(*mask);
