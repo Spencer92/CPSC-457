@@ -129,16 +129,11 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
 #if TESTING_NEVER_MIGRATE
   switchThread(this);
 #else /* migration enabled */
-  //Scheduler* target =  Runtime::getCurrThread()->getAffinity();
   Scheduler *target = nullptr;
   mword affinityMask = Runtime::getCurrThread()->getAffinityMask();
   Scheduler *sched[NUM_CORES];
   Scheduler *sched_current = nullptr;
-  static mword readyCountCheck = -1;
-  static mword readyCountCheck2 = -1;
-  int checker;
 
-  //  KOUT::outl("Entered preempt()");
   for(int i = 0; i < NUM_CORES; i++)
     {
       sched[i] = nullptr;
@@ -152,28 +147,25 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
 
   }  else {
 
-    //    Scheduler::yield();
-
-    if(affinityMask != 1)
-      {
-	KOUT::outl("affinityMask is ",affinityMask);
-      }
+    /*
+      Check each core to see if it is active and get the Scheduler for it
+     */
     
      mword j = 1;
      for(mword i = 0; i < NUM_CORES; i++)
        {
      	if((affinityMask & j) == j)
      	  {
-     	    //	    while(getcid() != 0/*(affinityMask & j)*/);
-	    
-     	    sched[i] = Machine::getScheduler(j);
+     	    sched[i] = Machine::getScheduler(i);
      	  }
 
      	j*=2;
        }
 
-    int current;
-    
+
+     /*
+       find the lowest ready count and set the target ready count to it.
+      */
     for(mword i = 0; i < NUM_CORES; i++)
       {
 	if(sched[i] != nullptr)
@@ -181,15 +173,12 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
 	    if(sched_current == nullptr)
 	      {
 		sched_current = sched[i];
-		//		current = i;
 	      }
 	    else
 	      {
 		if(sched_current->readyCount > sched[i]->readyCount)
 		  {
-		    //KOUT::outl("readyCount changed from sched[",current,"] to sched[",i,"]");
 		    sched_current = sched[i];
-		    current = i;
 		  }
 	      }
 	  }
@@ -198,10 +187,6 @@ void Scheduler::preempt() {               // IRQs disabled, lock count inflated
     target = sched_current;
     
 
-    
-    /*
-1010
-     */
 
 
     /* CPSC457l: Add code here to scan the affinity mask

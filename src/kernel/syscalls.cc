@@ -48,33 +48,27 @@ extern "C" void abort() {
 
 extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  Scheduler* scheduler = new Scheduler();
-  
+
+
   if(pid == 0)
     {
-      KOUT::outl("pid = 0");
-      if(cpusetsize > sizeof(cpu_set_t))
+      if(cpusetsize > sizeof(cpu_set_t) || *mask > get_core_count()) //If the core count is too high
 	{
-	  KOUT::outl("cpusetsize > sizeof(cpu_set_t)");
-	  return EINVAL;
+	  return -1; //EINVAL
 	}
       else
 	{
-	  KOUT::outl("Before yield in setaffinity");
-	  //	  scheduler->yield();
-	  KOUT::outl("After yield in setaffinity");
-	  KOUT::outl("Getting the runtime mask");
 	  Runtime::getCurrThread()->setAffinityMask(*mask);
-	  KOUT::outl("Finished getting runtime mask");
 
 	  LocalProcessor::getScheduler()->yield();
+	  return 0;
 	}
       
       //no error 
     }
   else
     {
-      return EPERM;
+      return -1; //EPERM
     }
 
       
@@ -83,23 +77,12 @@ extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 
 extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
 {
-  Scheduler* scheduler = new Scheduler();
+
   int getMask;
-    if(pid == 0)
-    {
-      KOUT::outl("pid is \n",pid);
-    }
-  else
-    {
-      KOUT::outl("pid isn't 0 but \n",pid);
-      }
   if(pid == 0)
     {
-      KOUT::outl("BEFORE YIELD IN GETAFFINITY");
-      //scheduler->yield();
-      KOUT::outl("AFTER YIELD IN GETAFFINITY");
-      KOUT::outl("pid is ",pid," but should be 0\n");
-      getMask = Runtime::getCurrThread()->getAffinityMask();
+
+      getMask = Runtime::getCurrThread()->getAffinityMask(); //get the mask
       
       
       return getMask;//Runtime::getCurrThread()->getAffinityMask();
@@ -109,7 +92,6 @@ extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
     {
 
       return -1;
-      //      Scheduler::yield();
     }
 }
 
