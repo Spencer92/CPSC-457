@@ -40,7 +40,7 @@ static void keybLoop() {
 
 void kosMain() {
   KOUT::outl("Welcome to KOS!", kendl);
-  auto iter = kernelFS.find("motb");
+    auto iter = kernelFS.find("motb");
   if (iter == kernelFS.end()) {
     KOUT::outl("motb information not found");
   } else {

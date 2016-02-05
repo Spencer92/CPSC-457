@@ -11,7 +11,7 @@ SRC=$(wildcard *.cc)
 OBJ=$(SRC:%.cc=%.o)
 EXE=$(SRC:%.cc=exec/%)
 
-all: $(EXE) exec/motb
+all: $(EXE) exec/motb exec/schedparam
 
 .PHONY: .FORCE
 
@@ -32,6 +32,13 @@ exec/motb: .FORCE
 	@echo >> $@
 	@echo -n "Build Date: " >> $@
 	@date >> $@
+	@echo >> $@
+
+exec/schedparam: .FORCE
+	@echo creating $@
+	@mkdir -p exec
+	@echo > $@
+	@echo "1 3"
 	@echo >> $@
 
 echo:
