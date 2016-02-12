@@ -51,6 +51,22 @@ void kosMain() {
       KOUT::out1(c);
     }
     KOUT::outl();
+    KOUT::outl("about to find schedparam");
+  auto iter2 = kernelFS.find("schedparam");
+  KOUT::outl("May have found schedparam");
+  if (iter2 == kernelFS.end()) {
+    //    KOUT::outl("Did not find schedparam");
+    KOUT::outl("schedparam information not found");
+  } else {
+    FileAccess f(iter2->second);
+    for (;;) {
+      char c;
+      //      KOUT::outl("found schedparam");
+      if (f.read(&c, 1) == 0) break;
+      KOUT::out1(c);
+    }
+    KOUT::outl();
+
   }
 #if TESTING_TIMER_TEST
   StdErr.print(" timer test, 3 secs...");
@@ -72,6 +88,7 @@ void kosMain() {
     KOUT::outl("...ping...");
   }
 #endif
+  }
 }
 
 extern "C" void kmain(mword magic, mword addr, mword idx)         __section(".boot.text");

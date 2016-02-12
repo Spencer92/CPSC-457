@@ -35,12 +35,12 @@ static void* foobar2(void*) {
   pthread_mutex_unlock(&iolock);
   for (int i = 0; i < 20; i++) {
     pthread_mutex_lock(&iolock);
-    printf("pokey %d\n", i);
+    //    printf("pokey %d\n", i);
     pthread_mutex_unlock(&iolock);
     for (int j = 0; j < 500000; j++) asm("" ::: "memory");
   }
   pthread_mutex_lock(&iolock);
-  printf("dokey\n");
+  //  printf("dokey\n");
   int* x = new int;              // no separate memory lock for now...
   pthread_mutex_unlock(&iolock);
   *x = 84;
@@ -65,7 +65,7 @@ int main() {
   void* result;
   pthread_join(t1, &result);
   pthread_mutex_lock(&iolock);
-  printf("foobar1: %i\n", *(int*)result);
+  //  printf("foobar1: %i\n", *(int*)result);
   pthread_mutex_unlock(&iolock);
   pthread_t t2, t3;
   pthread_create(&t3, nullptr, foobar3, nullptr);
@@ -76,7 +76,7 @@ int main() {
   for (int i = SyscallNum::max; i <= 100; i++) syscallStub(i);
   for (int i = 0; i < 10; i++) {
     pthread_mutex_lock(&iolock);
-    printf("working %d\n", i);
+    //    printf("working %d\n", i);
     pthread_mutex_unlock(&iolock);
     for (int j = 0; j < 100000; j++) asm("" ::: "memory");
   }
