@@ -25,6 +25,8 @@ class Thread;
 class Machine : public NoObject {
   friend void initGdb(mword); // initGdb calls setupIDT to redirect exception handlers
 
+  //  static mword schedMinGranularity;
+  //  static mword defaultEpochLength;
   static mword processorCount;
 
   static void setupIDT(uint32_t, paddr, uint32_t = 0)  __section(".boot.text");
@@ -38,6 +40,13 @@ class Machine : public NoObject {
   static void bootCleanup();
 
 public:
+  //  static mword schedMinGranularity;
+  //static mword defaultEpochLength;
+  //  static void setSchedMinGranularity(mword schedMin) {schedMinGranularity = schedMin; }
+  //static mword getSchedMinGranularity() {return schedMinGranularity; }
+  //static void setEpochLength(mword epoch) {defaultEpochLength = epoch; }
+  //static mword getEpochLength() {return defaultEpochLength; }
+
   static void initAP(mword idx)                        __section(".boot.text");
   static void initBSP(mword mag, vaddr mb, mword idx)  __section(".boot.text");
   static void bootMain();

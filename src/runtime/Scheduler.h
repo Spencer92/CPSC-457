@@ -47,9 +47,16 @@ class Scheduler {
   Scheduler(const Scheduler&) = delete;                  // no copy
   const Scheduler& operator=(const Scheduler&) = delete; // no assignment
 
+  static mword schedMinGranularity;
+  static mword defaultEpochLength;
+  
 public:
   Scheduler();
-  
+
+  static mword getSchedMinGranularity() {return schedMinGranularity; }
+  static mword getEpochLength() {return defaultEpochLength; }
+  static void setSchedMinGranularity(mword schedMin) { schedMinGranularity = schedMin; }
+  static void setEpochLength(mword epoch) {defaultEpochLength = epoch; }
   bool switchTest(Thread* t);
   void setPartner(Scheduler& s) { partner = &s; }
   static void resume(Thread& t);

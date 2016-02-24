@@ -38,7 +38,7 @@ exec/schedparam: .FORCE
 	@echo creating $@
 	@mkdir -p exec
 	@echo > $@
-	@echo "Creating schedparam..." >> $@
+	@echo "57 9" >> $@
 	@echo >> $@
 	@echo >> $@
 

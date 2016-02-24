@@ -1,5 +1,5 @@
 /******************************************************************************
-    Copyright © 2012-2015 Martin Karsten
+    Copyright ï¿½ 2012-2015 Martin Karsten
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "devices/Keyboard.h"
 
 #include "main/UserMain.h"
+#include "runtime/Scheduler.h"
 
 AddressSpace kernelSpace(true); // AddressSpace.h
 volatile mword Clock::tick;     // Clock.h
@@ -40,34 +41,79 @@ static void keybLoop() {
 
 void kosMain() {
   KOUT::outl("Welcome to KOS!", kendl);
-  auto iter = kernelFS.find("motb");
+  auto iter = kernelFS.find("schedparam");
   if (iter == kernelFS.end()) {
-    KOUT::outl("motb information not found");
-  } else {
-    FileAccess f(iter->second);
-    for (;;) {
-      char c;
-      if (f.read(&c, 1) == 0) break;
-      KOUT::out1(c);
-    }
-    KOUT::outl();
-    KOUT::outl("about to find schedparam");
-  auto iter2 = kernelFS.find("schedparam");
-  KOUT::outl("May have found schedparam");
-  if (iter2 == kernelFS.end()) {
-    //    KOUT::outl("Did not find schedparam");
     KOUT::outl("schedparam information not found");
   } else {
-    FileAccess f(iter2->second);
-    for (;;) {
-      char c;
-      //      KOUT::outl("found schedparam");
-      if (f.read(&c, 1) == 0) break;
-      KOUT::out1(c);
-    }
-    KOUT::outl();
+    mword machineValues;
+    mword beforeConversionValues;
+    FileAccess f(iter->second);
 
-  }
+    do
+      {
+    f.read(&machineValues, 1);
+    KOUT::outl("Machine values is: ",machineValues);
+      }while(machineValues < '0' || machineValues > '9');
+    /*    f.read(&machineValues, 1);
+    KOUT::outl("Machine values is: ",machineValues);
+    f.read(&machineValues, 1);
+    KOUT::outl("Machine values is: ",machineValues);*/
+    beforeConversionValues = machineValues - '0';
+    //    beforeConversionValues &= 0x00000000000000FF;
+    KOUT::outl("BeforeConversionValues: ",beforeConversionValues);
+    beforeConversionValues *= 10;
+    KOUT::outl("BeforeConversionValues: ",beforeConversionValues);
+
+    do
+      {
+    f.read(&machineValues, 1);
+    KOUT::outl("Machine values is: ",machineValues);
+      }while(machineValues < '0' && machineValues > '9');
+    
+    //f.read(&machineValues, 1);
+    beforeConversionValues += machineValues-'0';
+    // beforeConversionValues &= 0x000000000000000000FF;
+    KOUT::outl("BeforeConversionValues: ",beforeConversionValues);
+    
+    Scheduler::setEpochLength(beforeConversionValues);
+    //    Machine::defaultEpochLength = machineValues;
+    f.read(&machineValues, 1);
+    KOUT::outl("Machine values is: ",machineValues);
+    f.read(&machineValues, 1);
+    KOUT::outl("Machine values is: ",machineValues);
+    machineValues -= '0';
+    beforeConversionValues = machineValues;
+    //    beforeConversionValues &= 0x000000000000000000FF;
+    Clock::wait(3000);
+    
+    
+    Scheduler::setSchedMinGranularity(machineValues);
+    //Machine::schedMinGranularity = machineValues;
+    KOUT::outl("Epoch length: ",Scheduler::getEpochLength());
+    KOUT::outl("SchedMin: ",Scheduler::getSchedMinGranularity());
+    
+    KOUT::outl();
+    KOUT::outl("about to find schedparam");
+    Clock::wait(5000);
+    
+    /*    mword before;
+    mword after;
+    mword total;
+
+    for(int i = 0; i < 10; i++)
+    {
+      before = CPU::readTSC();
+      Clock::wait(1000);
+      after = CPU::readTSC();
+      total = after - before;
+      KOUT::outl("readTSCBefore = ",before);
+      KOUT::outl("readTSCAfter = ",after);
+      KOUT::outl("readTSCTotal = ",total,"\n");
+      KOUT::outl("Epoch length: ",Scheduler::getEpochLength());
+      KOUT::outl("SchedMin: ",Scheduler::getSchedMinGranularity());
+
+      }*/
+  
 #if TESTING_TIMER_TEST
   StdErr.print(" timer test, 3 secs...");
   for (int i = 0; i < 3; i++) {

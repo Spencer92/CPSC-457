@@ -1,5 +1,5 @@
 /******************************************************************************
-    Copyright © 2012-2015 Martin Karsten
+    Copyright ï¿½ 2012-2015 Martin Karsten
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -46,6 +46,9 @@ extern void initCdiDrivers();
 extern bool findCdiDriver(const PCIDevice&);
 extern void lwip_init_tcpip();
 extern void kosMain();
+
+extern mword schedMinGranularity;
+extern mword defaultEpochLength;
 
 // check various assumptions about data type sizes
 static_assert(sizeof(uint64_t) == sizeof(mword), "mword != uint64_t" );
@@ -114,6 +117,26 @@ struct IrqInfo {
 } irqTable[MaxIrqCount];
 static Bitmap<MaxIrqCount> irqMask;     // IRQ bitmap
 static Semaphore asyncIrqSem;
+
+//Get Values for schedMin and default Epoch
+/*void Machine::setSchedMinGranularity(mword schedMin)
+{
+  schedMinGranularity = schedMin;
+}
+mword Machine::getSchedMinGranularity()
+{
+  return schedMinGranularity;
+}
+void Machine::setEpochLength(mword epoch)
+{
+  defaultEpochLength = epoch;
+}
+mword Machine::getEpochLength()
+{
+  return defaultEpochLength;
+}
+*/
+
 
 // init routine for APs: on boot stack and using identity paging
 void Machine::initAP(mword idx) {
@@ -314,6 +337,8 @@ void Machine::initBSP(mword magic, vaddr mbiAddr, mword idx) {
 
 // on proper stack, processor initialized
 void Machine::initBSP2() {
+
+
   DBG::outl(DBG::Boot, "********** NEW STACK ***********");
   DBG::outl(DBG::Boot, "BSP: ", LocalProcessor::getIndex(), '/', LocalProcessor::getSystemID(), '/', LocalProcessor::getApicID());
 
@@ -397,6 +422,54 @@ apDone:
   // start irq thread after cdi init -> avoid interference from device irqs
   DBG::outl(DBG::Boot, "Creating IRQ thread...");
   Thread::create()->setPriority(topPriority)->setAffinity(processorTable[0].scheduler)->start((ptr_t)asyncIrqLoop);
+  /*Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here
+Begin User Inserted Code Here*/
+
+
+  mword before;
+  mword after;
+  mword total;
+  
+  before = CPU::readTSC();
+  Clock::wait(1000);
+  after = CPU::readTSC();
+  total = after - before;
+
+
+  KOUT::outl("Before: ",before);
+  KOUT::outl("After: ",after);
+  KOUT::outl("Total: ",total);
+  Clock::wait(3000);
+
+
+  
+  
+
+
+
+
+
+
+  
 }
 
 void Machine::bootCleanup() {
@@ -533,7 +606,7 @@ void Machine::setupIDTable() {
   for (size_t i = 0; i < MaxIrqCount; i += 1) {
     irqTable[i].ioApicAddr    = 0;
     irqTable[i].ioApicIrq     = 0;
-    irqTable[i].globalIrq     = i; 
+    irqTable[i].globalIrq     = i;
     irqTable[i].overrideFlags = 0;
   }
 

@@ -22,7 +22,18 @@
 #include "world/Access.h"
 #include "machine/Machine.h"
 #include "devices/Keyboard.h"	   
-	   
+
+/**********************************
+Used to declare static
+
+
+********************************/
+
+mword Scheduler::schedMinGranularity = 0;
+mword Scheduler::defaultEpochLength = 0;
+
+
+
 /***********************************
     Used as a node in the tree to 
 	reference the thread instance
