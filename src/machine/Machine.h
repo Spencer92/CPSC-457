@@ -38,6 +38,7 @@ class Machine : public NoObject {
   static void initAP2()                                __section(".boot.text");
   static void initBSP2()                               __section(".boot.text");
   static void bootCleanup();
+  static mword CPUticks;
 
 public:
   //  static mword schedMinGranularity;
@@ -47,6 +48,10 @@ public:
   //static void setEpochLength(mword epoch) {defaultEpochLength = epoch; }
   //static mword getEpochLength() {return defaultEpochLength; }
 
+  /*Get and Set CPU*/
+  static mword getCPUticks() {return CPUticks; }
+  static void setCPUticks(mword newTicks) { CPUticks = newTicks; }
+  
   static void initAP(mword idx)                        __section(".boot.text");
   static void initBSP(mword mag, vaddr mb, mword idx)  __section(".boot.text");
   static void bootMain();

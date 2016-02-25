@@ -68,7 +68,7 @@ Scheduler::Scheduler() : readyCount(0), preemption(0), resumption(0), partner(th
 	//(It keeps the CPU awake when there are no other threads currently running)
 	Thread* idleThread = Thread::create((vaddr)idleStack, minimumStack);
 	idleThread->setAffinity(this)->setPriority(idlePriority);
-	// use low-level routines, since runtime context might not exist
+	// use low-level routies, since runtime context might not exist
 	idleThread->stackPointer = stackInit(idleThread->stackPointer, &Runtime::getDefaultMemoryContext(), (ptr_t)Runtime::idleLoop, this, nullptr, nullptr);
 	
 	//Initialize the tree that contains the threads waiting to be served

@@ -41,6 +41,10 @@
 #include <list>
 #include <map>
 
+//Initialize Empty CPUticks
+mword Machine::CPUticks = 0;
+
+
 // simple direct declarations in lieu of more header files
 extern void initCdiDrivers();
 extern bool findCdiDriver(const PCIDevice&);
@@ -447,18 +451,18 @@ Begin User Inserted Code Here*/
 
   mword before;
   mword after;
-  mword total;
-  
   before = CPU::readTSC();
   Clock::wait(1000);
+
   after = CPU::readTSC();
-  total = after - before;
+  
+  Machine::setCPUticks((after - before)/1000);
 
 
   KOUT::outl("Before: ",before);
   KOUT::outl("After: ",after);
-  KOUT::outl("Total: ",total);
-  Clock::wait(3000);
+  KOUT::outl("Total: ",Machine::getCPUticks());
+  //Clock::wait(3000);
 
 
   

@@ -93,8 +93,16 @@ void kosMain() {
     KOUT::outl("SchedMin: ",Scheduler::getSchedMinGranularity());
     
     KOUT::outl();
-    KOUT::outl("about to find schedparam");
-    Clock::wait(5000);
+    KOUT::outl("About to set miliseconds to ticks...");
+
+    Scheduler::setSchedMinGranularityTicks(Scheduler::getSchedMinGranularity() * Machine::getCPUticks());
+    Scheduler::setEpochLengthTicks(Scheduler::getEpochLength() * Machine::getCPUticks());
+
+
+    KOUT::outl("SchedMinGranularity in ticks: ",Scheduler::getSchedMinGranularityTicks());
+    KOUT::outl("Epoch Length in ticks:",Scheduler::getEpochLength());
+
+    
     
     /*    mword before;
     mword after;
@@ -113,7 +121,7 @@ void kosMain() {
       KOUT::outl("SchedMin: ",Scheduler::getSchedMinGranularity());
 
       }*/
-  
+    /*  
 #if TESTING_TIMER_TEST
   StdErr.print(" timer test, 3 secs...");
   for (int i = 0; i < 3; i++) {
@@ -122,6 +130,7 @@ void kosMain() {
   }
   StdErr.print(" done.", kendl);
 #endif
+
 #if TESTING_KEYCODE_LOOP
   Thread* t = Thread::create()->setPriority(topPriority);
   Machine::setAffinity(*t, 0);
@@ -134,6 +143,7 @@ void kosMain() {
     KOUT::outl("...ping...");
   }
 #endif
+    */
   }
 }
 

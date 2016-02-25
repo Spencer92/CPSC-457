@@ -49,14 +49,32 @@ class Scheduler {
 
   static mword schedMinGranularity;
   static mword defaultEpochLength;
+
+  static mword schedMinGranularityTicks;
+  static mword defaultEpochLengthTicks;
+
+
   
 public:
   Scheduler();
 
+  //Get before conversion
   static mword getSchedMinGranularity() {return schedMinGranularity; }
   static mword getEpochLength() {return defaultEpochLength; }
+
+  //Get after conversion
+  static mword getSchedMinGranularityTicks() {return schedMinGranularity; }
+  static mword getEpochLengthTicks() {return defaultEpochLength; }
+  
+  //Set before conversion
   static void setSchedMinGranularity(mword schedMin) { schedMinGranularity = schedMin; }
   static void setEpochLength(mword epoch) {defaultEpochLength = epoch; }
+
+  //Set after conversion
+  static void setSchedMinGranularityTicks(mword schedMin) { schedMinGranularity = schedMin; }
+  static void setEpochLengthTicks(mword epoch) {defaultEpochLength = epoch; }
+
+
   bool switchTest(Thread* t);
   void setPartner(Scheduler& s) { partner = &s; }
   static void resume(Thread& t);
