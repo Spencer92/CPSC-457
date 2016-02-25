@@ -20,7 +20,7 @@ public:
     
     bool empty() const {
 		return root==NULL;
-	}
+    }
     
     T* readMinNode() const {
         node *cur = root;

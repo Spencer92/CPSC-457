@@ -63,7 +63,7 @@ class ThreadNode{
 /***********************************
 			Constructor
 ***********************************/	   
-Scheduler::Scheduler() : readyCount(0), preemption(0), resumption(0), partner(this) {
+Scheduler::Scheduler() : readyCount(0), readyTotalPriority(0),preemption(0), resumption(0), partner(this) {
 	//Initialize the idle thread
 	//(It keeps the CPU awake when there are no other threads currently running)
 	Thread* idleThread = Thread::create((vaddr)idleStack, minimumStack);
@@ -77,6 +77,7 @@ Scheduler::Scheduler() : readyCount(0), preemption(0), resumption(0), partner(th
 	//Add the idle thread to the tree
 	readyTree->insert(*(new ThreadNode(idleThread)));
 	readyCount += 1;
+	readyTotalPriority += idleThread->priority+1;
 }
 
 /***********************************

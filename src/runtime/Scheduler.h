@@ -53,6 +53,7 @@ class Scheduler {
   static mword schedMinGranularityTicks;
   static mword defaultEpochLengthTicks;
 
+  mword readyTotalPriority;
 
   
 public:
