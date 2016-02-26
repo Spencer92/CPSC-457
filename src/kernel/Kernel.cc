@@ -150,9 +150,13 @@ void kosMain() {
 #endif
     */
   }
-
+  int values[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+  
   KOUT::outl("Starting Tree");
   testTree = new Tree<int>();
+
+  KOUT::outl("Starting Right-Left Insertion test case, with \'8\' as starting node");
+  //  testTree.insert(
   
 }
 
