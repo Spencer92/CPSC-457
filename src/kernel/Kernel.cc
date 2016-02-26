@@ -24,6 +24,7 @@
 
 #include "main/UserMain.h"
 #include "runtime/Scheduler.h"
+#include "generic/tree.h"
 
 AddressSpace kernelSpace(true); // AddressSpace.h
 volatile mword Clock::tick;     // Clock.h
@@ -39,9 +40,13 @@ static void keybLoop() {
 }
 #endif
 
+
+
+
 void kosMain() {
   KOUT::outl("Welcome to KOS!", kendl);
   auto iter = kernelFS.find("schedparam");
+  Tree<int>* testTree;
   if (iter == kernelFS.end()) {
     KOUT::outl("schedparam information not found");
   } else {
@@ -145,6 +150,10 @@ void kosMain() {
 #endif
     */
   }
+
+  KOUT::outl("Starting Tree");
+  testTree = new Tree<int>();
+  
 }
 
 extern "C" void kmain(mword magic, mword addr, mword idx)         __section(".boot.text");

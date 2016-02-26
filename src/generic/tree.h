@@ -1,3 +1,5 @@
+#ifndef TREE_H
+#define TREE_H
 // AVL-tree implementation
 // source: https://github.com/SuprDewd/CompetitiveProgramming/blob/master/code/data-structures/avl_tree.cpp
 // note that the code on the github is very unreadable
@@ -138,3 +140,4 @@ private:
                 n = n->p; }
             n = n->p; } }
 };
+#endif
