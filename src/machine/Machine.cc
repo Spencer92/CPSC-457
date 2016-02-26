@@ -462,7 +462,7 @@ Begin User Inserted Code Here*/
   KOUT::outl("Before: ",before);
   KOUT::outl("After: ",after);
   KOUT::outl("Total: ",Machine::getCPUticks());
-  //Clock::wait(3000);
+
 
 
   

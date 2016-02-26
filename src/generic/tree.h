@@ -100,7 +100,7 @@ public:
 	{
 	  printTreeInOrder(currentNode->l);
 	  
-	  KOUT::outl(currentNode->item);
+	  KOUT::out1(currentNode->item," ");
 	  
 	  printTreeInOrder(currentNode->r);
 	}
