@@ -8,6 +8,7 @@
 // and making the code more readable.
 
 //Created by: Adam Fazekas (Fall 2015)
+#include "kernel/Output.h"
 
 template <class T>
 class Tree {
@@ -90,6 +91,21 @@ public:
             else if (n > sz(cur->l)) n -= sz(cur->l) + 1, cur = cur->r;
             else break;
         } return cur; }
+
+    void printTreeInOrder(node* currentNode)
+    {
+      if(currentNode == NULL)
+	return;
+      else
+	{
+	  printTreeInOrder(currentNode->l);
+	  
+	  KOUT::outl(currentNode->item);
+	  
+	  printTreeInOrder(currentNode->r);
+	}
+    }
+    
 
 private:
     inline int sz(node *n) const { return n ? n->size : 0; }

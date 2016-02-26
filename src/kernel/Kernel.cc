@@ -25,6 +25,7 @@
 #include "main/UserMain.h"
 #include "runtime/Scheduler.h"
 #include "generic/tree.h"
+void insertTreeTesting(Tree<int>* testTree, int value_1, int value_2, int value_3, short testCase);
 
 AddressSpace kernelSpace(true); // AddressSpace.h
 volatile mword Clock::tick;     // Clock.h
@@ -40,7 +41,7 @@ static void keybLoop() {
 }
 #endif
 
-
+  
 
 
 void kosMain() {
@@ -49,6 +50,7 @@ void kosMain() {
   Tree<int>* testTree;
   if (iter == kernelFS.end()) {
     KOUT::outl("schedparam information not found");
+
   } else {
     mword machineValues;
     mword beforeConversionValues;
@@ -152,13 +154,131 @@ void kosMain() {
   }
   int values[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   
+
   KOUT::outl("Starting Tree");
   testTree = new Tree<int>();
 
-  KOUT::outl("Starting Right-Left Insertion test case, with \'8\' as starting node");
-  //  testTree.insert(
+  KOUT::outl("Starting Right Right Insertion test case, with \'8\' as starting node");
+  KOUT::outl("Inserting 8...");
+  testTree->insert(values[8]);
+  KOUT::outl("Inserting 9...");
+  testTree->insert(values[9]);
+  KOUT::outl("Inserting 10...");
+  testTree->insert(values[10]);
+
+  KOUT::outl("InOrder Traversal Should Give \'8 9 10\' as the result");
+  testTree->printTreeInOrder(testTree->root);
+  while(testTree->root != NULL)
+    {
+      testTree->erase(testTree->root);
+    }
+  delete testTree;
+
+  KOUT::outl("Starting Tree");
+  testTree = new Tree<int>();
+
+  KOUT::outl("Starting Right Left Insertion test case, with \'8\' as starting node");
+  KOUT::outl("Inserting 8...");
+  testTree->insert(values[8]);
+  KOUT::outl("Inserting 9...");
+  testTree->insert(values[9]);
+  KOUT::outl("Inserting 7...");
+  testTree->insert(values[7]);
+
+  KOUT::outl("InOrder Traversal Should Give \'7 8 9\' as the result");
+  testTree->printTreeInOrder(testTree->root);
+  while(testTree->root != NULL)
+    {
+      testTree->erase(testTree->root);
+    }
+  delete testTree;
+
+  KOUT::outl("Starting Tree");
+  testTree = new Tree<int>();
+
+  KOUT::outl("Starting Left Right Insertion test case, with \'8\' as starting node");
+  KOUT::outl("Inserting 8...");
+  testTree->insert(values[8]);
+  KOUT::outl("Inserting 7...");
+  testTree->insert(values[7]);
+  KOUT::outl("Inserting 9...");
+  testTree->insert(values[9]);
+
+  KOUT::outl("InOrder Traversal Should Give \'7 8 9\' as the result");
+  testTree->printTreeInOrder(testTree->root);
+  while(testTree->root != NULL)
+    {
+      testTree->erase(testTree->root);
+    }
+  delete testTree;
+
+
+  
+    /*    KOUT::outl("InOrder Traversal Should Give \'8 9\' as the result");
+  testTree->printTreeInOrder(testTree->root);
+  while(testTree->root != NULL)
+    {
+      testTree->erase(testTree->root);
+    }
+    delete testTree;*/
+  
+  // insertTreeTesting(testTree, values[8],values[9],values[10],0);
+  //KOUT::outl("InOrder Traversal Should Give '8,9,10' as the result");
+  //testTree->printTreeInOrder(testTree->root);
+  //while(testTree->root != NULL)
+  //  {
+  //    testTree->erase(testTree->root);
+  //  }
+  // delete testTree;
+  
+
+    
   
 }
+
+void insertTreeTesting(Tree<int>* testTree, int value_1, int value_2, int value_3, short testCase)
+{
+  KOUT::outl("Starting Tree");
+  testTree = new Tree<int>();
+
+  if(testCase == 0)
+    {
+      KOUT::outl("Starting Right Right Insertion test case, with \'",value_1,"\' as starting node");
+    }
+  else if(testCase == 1)
+    {
+      KOUT::outl("Starting Right Left Insertion test case, with \'",value_1,"\' as starting node");
+    }
+  else if(testCase == 2)
+    {
+      KOUT::outl("Starting Left Right Insertion test case, with \'",value_1,"\' as starting node");
+    }
+  else
+    {
+      KOUT::outl("Starting Left Left Insertion test case, with \'",value_1,"\' as starting node");
+    }
+
+  KOUT::outl("Inserting ",value_1,"...");
+  testTree->insert(value_1);
+  KOUT::outl("Inserting ",value_2,"...");
+  testTree->insert(value_2);
+  KOUT::outl("Inserting ",value_3,"...");
+  testTree->insert(value_3);
+
+  
+  /*  KOUT::outl("InOrder Traversal Should Give \'8 9\' as the result");
+  testTree->printTreeInOrder(testTree->root);
+  while(testTree->root != NULL)
+    {
+      testTree->erase(testTree->root);
+    }
+  delete testTree;
+  */
+
+}
+
+
+
 
 extern "C" void kmain(mword magic, mword addr, mword idx)         __section(".boot.text");
 extern "C" void kmain(mword magic, mword addr, mword idx) {
