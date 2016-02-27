@@ -427,27 +427,16 @@ apDone:
   DBG::outl(DBG::Boot, "Creating IRQ thread...");
   Thread::create()->setPriority(topPriority)->setAffinity(processorTable[0].scheduler)->start((ptr_t)asyncIrqLoop);
   /*Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here
-Begin User Inserted Code Here*/
+    
+    This reads the time stamp counter twice to determine CPU ticks-per-second
+    that the machine uses to determine speed.
+    
+    This happens once, then a second later, and the subtraction of those two
+    gives the amount of CPU ticks per second, and the division by 1000 gives
+    ticks per milisecond.
 
+   */
+  
 
   mword before;
   mword after;
@@ -457,22 +446,6 @@ Begin User Inserted Code Here*/
   after = CPU::readTSC();
   
   Machine::setCPUticks((after - before)/1000);
-
-
-  KOUT::outl("Before: ",before);
-  KOUT::outl("After: ",after);
-  KOUT::outl("Total: ",Machine::getCPUticks());
-
-
-
-  
-  
-
-
-
-
-
-
   
 }
 

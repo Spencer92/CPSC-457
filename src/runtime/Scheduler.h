@@ -47,6 +47,21 @@ class Scheduler {
   Scheduler(const Scheduler&) = delete;                  // no copy
   const Scheduler& operator=(const Scheduler&) = delete; // no assignment
 
+
+  /*
+    minGranularity is the minimum time a task must run before it can be
+    pre-empted by some other task.
+    
+    The Epoch Length is the amount of time that must be fairly divided
+    between all of the processes that need to run.
+    
+    These values are than multiplied by the CPU tick rate, in order
+    to give the amount of time given in ticks, represented with 
+    schedMinGranulartiyTicks and defaultEpochLengthTicks.
+  */
+  
+  
+  
   static mword schedMinGranularity;
   static mword defaultEpochLength;
 

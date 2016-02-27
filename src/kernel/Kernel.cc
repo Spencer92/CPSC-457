@@ -50,72 +50,105 @@ void kosMain() {
   KOUT::outl("Welcome to KOS!", kendl);
   auto iter = kernelFS.find("schedparam");
   Tree<int>* testTree;
+  int values[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
   if (iter == kernelFS.end()) {
     KOUT::outl("schedparam information not found");
 
   } else {
+
+    /*
+      This reads from schedparam in order to determine the minGranularity
+      and Epoch Length, which are set prior to compilation
+
+      minGranularity is the minimum time a task must run before it can be
+      pre-empted by some other task.
+
+      The Epoch Length is the amount of time that must be fairly divided
+      between all of the processes that need to run.
+
+      These values are than multiplied by the CPU tick rate, in order
+      to give the amount of time given in ticks
+
+    */
+
+    
     mword machineValues;
     mword beforeConversionValues;
     FileAccess f(iter->second);
 
     do
       {
-    f.read(&machineValues, 1);
-    KOUT::outl("Machine values is: ",machineValues);
+	f.read(&machineValues, 1);
+	Clock::wait(1);
       }while(machineValues < '0' || machineValues > '9');
-    beforeConversionValues = machineValues - '0';
 
-    KOUT::outl("BeforeConversionValues: ",beforeConversionValues);
+    beforeConversionValues = machineValues - '0';
     beforeConversionValues *= 10;
-    KOUT::outl("BeforeConversionValues: ",beforeConversionValues);
+    
 
     do
       {
-    f.read(&machineValues, 1);
-    KOUT::outl("Machine values is: ",machineValues);
+	f.read(&machineValues, 1);
+
       }while(machineValues < '0' && machineValues > '9');
     
 
     beforeConversionValues += machineValues-'0';
 
-    KOUT::outl("BeforeConversionValues: ",beforeConversionValues);
+
     
     Scheduler::setEpochLength(beforeConversionValues);
 
+    
+    f.read(&machineValues, 1);//consume the space
     f.read(&machineValues, 1);
-    KOUT::outl("Machine values is: ",machineValues);
-    f.read(&machineValues, 1);
-    KOUT::outl("Machine values is: ",machineValues);
     machineValues -= '0';
-    beforeConversionValues = machineValues;
 
-    Clock::wait(3000);
+
+
     
     
     Scheduler::setSchedMinGranularity(machineValues);
 
+    
+    //Display values to screen
     KOUT::outl("Epoch length: ",Scheduler::getEpochLength());
     KOUT::outl("SchedMin: ",Scheduler::getSchedMinGranularity());
-    
-    KOUT::outl();
-    KOUT::outl("About to set miliseconds to ticks...");
 
     Scheduler::setSchedMinGranularityTicks(Scheduler::getSchedMinGranularity() * Machine::getCPUticks());
     Scheduler::setEpochLengthTicks(Scheduler::getEpochLength() * Machine::getCPUticks());
 
 
     KOUT::outl("SchedMinGranularity in ticks: ",Scheduler::getSchedMinGranularityTicks());
-    KOUT::outl("Epoch Length in ticks:",Scheduler::getEpochLength());
+    KOUT::outl("Epoch Length in ticks: ",Scheduler::getEpochLength());
 
     
     
   }
-  int values[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+  /*
+    Testing the AVL tree in generic/tree.h
+
+    This test the tree in generic/tree.h to determine if the tree is
+    a proper AVL tree. In-Order Tree traversal is used to determine if the
+    Insersion and Deletion produce correct AVL trees
+
+
+  */
+
+
+  /*
+    RIGHT RIGHT INSERSION TEST CASE
+
+    Two values that are larger than the root value are inserted
+    Rotation occurs
+
+  */
   
 
   KOUT::outl("Starting Tree");
   testTree = new Tree<int>();
-
+  
   KOUT::outl("Starting Right Right Insertion test case, with \'8\' as starting node");
   KOUT::outl("Inserting 8...");
   testTree->insert(values[8]);
@@ -131,12 +164,25 @@ void kosMain() {
     {
       testTree->erase(testTree->root);
     }
-  //delete[] testTree;
+
 
   Clock::wait(3000);
+
+
+  /*
+    RIGHT LEFT INSERSION TEST CASE
+
+    One value that is smaller and one value that is larger than the root
+    are inserted
+    Rotation does not occur
+
+  */
+
+
+
   
   KOUT::outl("Starting Tree");
-  //  testTree = new Tree<int>();
+
 
   KOUT::outl("Starting Right Left Insertion test case, with \'8\' as starting node, \n so no rotation occurred");
   KOUT::outl("Inserting 8...");
@@ -153,12 +199,26 @@ void kosMain() {
     {
       testTree->erase(testTree->root);
     }
-  //delete[] testTree;
+
 
   Clock::wait(3000);
+
+
+  /*
+    LEFT RIGHT INSERSION TEST CASE
+
+    One value that is smaller and one value that is larger than the root
+    are inserted
+    Rotation does not occur
+
+  */
+
+
+
+
   
   KOUT::outl("Starting Tree");
-  //testTree = new Tree<int>();
+
 
   KOUT::outl("Starting Left Right Insertion test case, with \'8\' as starting node");
   KOUT::outl("Inserting 8...");
@@ -168,7 +228,7 @@ void kosMain() {
   KOUT::outl("Inserting 9...");
   testTree->insert(values[9]);
 
-  KOUT::outl("InOrder Traversal Should Give \'7 8 9\' as the result, with 8 as the root");
+  KOUT::outl("InOrder Traversal Should Give \'7 8 9\' as the result, with 8 as the root, so no rotation occured");
 
   testTree->printTreeInOrder(testTree->root);
   KOUT::outl("\nRoot is ",testTree->root->item);
@@ -177,12 +237,23 @@ void kosMain() {
     {
       testTree->erase(testTree->root);
     }
-  //delete[] testTree;
+
 
   Clock::wait(3000);
 
+
+  /*
+    LEFT LEFT INSERSION TEST CASE
+
+    Two values that are smaller than the root value are inserted
+    Rotation occurs
+
+  */
+
+
+  
   KOUT::outl("Starting Tree");
-  //testTree = new Tree<int>();
+
 
   KOUT::outl("Starting Left Left Insertion test case, with \'8\' as starting node");
   KOUT::outl("Inserting 8...");
@@ -199,8 +270,18 @@ void kosMain() {
     {
       testTree->erase(testTree->root);
     }
-  //delete[] testTree;
 
+
+  /*
+    RIGHT RIGHT DELETION TEST CASE
+
+    Two values that are larger than the root node are deleted
+    No Rotation occurs
+
+  */
+
+
+  
   testTree = new Tree<int>();
   insertTreeTesting(testTree,values,values[3],values[11]);
 
@@ -213,30 +294,49 @@ void kosMain() {
   KOUT::outl("\nRoot is: ",testTree->root->item);
   Clock::wait(3000);
 
-    while(testTree->root != NULL)
+  while(testTree->root != NULL)
     {
       testTree->erase(testTree->root);
     }
 
 
+  /*
+    RIGHT LEFT DELETION TEST CASE
+
+    One value that is smaller and one value that is larger than the root node are deleted
+    No Rotation occurs
+
+  */
+
+
+  
   insertTreeTesting(testTree,values,values[6],values[12]);
   
-    KOUT::outl("Starting Right Left Deletion test case, with \'",testTree->root->item,"\' as root node");
+  KOUT::outl("Starting Right Left Deletion test case, with \'",testTree->root->item,"\' as root node");
   KOUT::outl("Need to delete ",values[12],", then ",values[7],", for Right Left deletion");
   deleteTreeTesting(testTree, values[12]);
   deleteTreeTesting(testTree, values[7]);
-  KOUT::outl("Inorder Traversal should give 6 8 9 10 12, with 9 as root");
+  KOUT::outl("Inorder Traversal should give 6 8 9 10 11, with 9 as root");
   testTree->printTreeInOrder(testTree->root);
   KOUT::outl("\nRoot is: ",testTree->root->item);
   Clock::wait(3000);
 
-    while(testTree->root != NULL)
+  while(testTree->root != NULL)
     {
       testTree->erase(testTree->root);
     }
 
 
-    insertTreeTesting(testTree,values,values[5],values[12]);
+  /*
+    RIGHT LEFT DELETION TEST CASE
+
+    One value that is smaller and one value that is larger than the root node are deleted
+    No Rotation occurs
+
+  */
+
+    
+  insertTreeTesting(testTree,values,values[5],values[12]);
 
   KOUT::outl("Starting Left Right Deletion test case, with \'",testTree->root->item,"\' as root node");
   KOUT::outl("Need to delete ",values[6],", then ",values[10],", for Left Right deletion");
@@ -246,90 +346,51 @@ void kosMain() {
   testTree->printTreeInOrder(testTree->root);
   KOUT::outl("\nRoot is: ",testTree->root->item);
   Clock::wait(3000);
-
+  
   while(testTree->root != NULL)
     {
       testTree->erase(testTree->root);
     }
 
+
+  /*
+    LEFT LEFT DELETION TEST CASE
+
+    Two values that are smaller than the root node are deleted
+    Rotation occurs
+
+  */
+
   
-    insertTreeTesting(testTree,values,values[6],values[11]);
+  
+  insertTreeTesting(testTree,values,values[6],values[13]);
 
   KOUT::outl("Starting Left Left Deletion test case, with \'",testTree->root->item,"\' as root node");
   KOUT::outl("Need to delete ",values[7],", then ",values[6],", for Left Left deletion");
   deleteTreeTesting(testTree, values[7]);
   deleteTreeTesting(testTree, values[6]);
-  KOUT::outl("Inorder Traversal should give 8 9 10 11, with 9 as the root");
+  KOUT::outl("Inorder Traversal should give 8 9 10 11 12 13, with 11 as the root");
   testTree->printTreeInOrder(testTree->root);
   KOUT::outl("\nRoot is: ",testTree->root->item);
-  Clock::wait(3000);
 
-    while(testTree->root != NULL)
-    {
-      testTree->erase(testTree->root);
-    }
-    /*
-    insertTreeTesting(testTree,values,values[6],values[12]);
-    
-  KOUT::outl("Starting Left Right Deletion test case, with\n no rotation and \'",testTree->root->item,"\' as root node");
-  KOUT::outl("Need to delete ",values[7],", then ",values[11],", for Left Left deletion");
-  deleteTreeTesting(testTree, values[7]);
-  deleteTreeTesting(testTree, values[11]);
-  KOUT::outl("Inorder Traversal should give 6 8 9 10 12, with 9 as the root");
-  testTree->printTreeInOrder(testTree->root);
-  KOUT::outl("\nRoot is: ",testTree->root->item);
-  Clock::wait(3000);
 
-    while(testTree->root != NULL)
-    {
-      testTree->erase(testTree->root);
-    }
-    */
-    
-  
-    /*    KOUT::outl("InOrder Traversal Should Give \'8 9\' as the result");
-  testTree->printTreeInOrder(testTree->root);
   while(testTree->root != NULL)
     {
       testTree->erase(testTree->root);
     }
-    delete testTree;*/
+    
+    
+    
   
-  // insertTreeTesting(testTree, values[8],values[9],values[10],0);
-  //KOUT::outl("InOrder Traversal Should Give '8,9,10' as the result");
-  //testTree->printTreeInOrder(testTree->root);
-  //while(testTree->root != NULL)
-  //  {
-  //    testTree->erase(testTree->root);
-  //  }
-  // delete testTree;
   
 
     
   
 }
 
-    void insertTreeTesting(Tree<int>* testTree, int values[], int values_start, int values_end)
+void insertTreeTesting(Tree<int>* testTree, int values[], int values_start, int values_end)
 {
-  KOUT::outl("Deleting Tree");
-
-
-  /*  if(testCase == 0)
-    {
-      KOUT::outl("Starting Right Right Insertion test case, with \'",value_1,"\' as starting node");
-    }
-  else if(testCase == 1)
-    {
-      KOUT::outl("Starting Right Left Insertion test case, with \'",value_1,"\' as starting node");
-    }
-  else if(testCase == 2)
-    {
-      KOUT::outl("Starting Left Right Insertion test case, with \'",value_1,"\' as starting node");
-    }
-  else
-    {
-      KOUT::outl("Starting Left Left Insertion test case, with \'",value_1,"\' as starting node");
-      }*/
+  KOUT::outl("Creating Tree");
 
 
   for(int i = values_start; i <= values_end; i++)
@@ -337,60 +398,14 @@ void kosMain() {
       KOUT::outl("Inserting ",values[i],"...");
       testTree->insert(values[i]);
     }
-  /*  KOUT::outl("Inserting ",value_2,"...");
-  testTree->insert(value_2);
-  KOUT::outl("Inserting ",value_3,"...");
-  testTree->insert(value_3);*/
-
-  
-  /*  KOUT::outl("InOrder Traversal Should Give \'8 9\' as the result");
-  testTree->printTreeInOrder(testTree->root);
-  while(testTree->root != NULL)
-    {
-      testTree->erase(testTree->root);
-    }
-  delete testTree;
-  */
 
 }
 
-  void deleteTreeTesting(Tree<int>* testTree, int value_to_delete)
+void deleteTreeTesting(Tree<int>* testTree, int value_to_delete)
 {
-  /*
-  if(testCase == 0 && testTree->root != NULL)
-    {
-      KOUT::outl("Starting Right Right Deletion test case, with \'",value_1,"\' as starting node");
-    }
-  else if(testCase == 1 && testTree->root != NULL)
-    {
-      KOUT::outl("Starting Right Left Deletion test case, with \'",value_1,"\' as starting node");
-    }
-  else if(testCase == 2 && testTree->root != NULL)
-    {
-      KOUT::outl("Starting Left Right Deletion test case, with \'",value_1,"\' as starting node");
-    }
-  else if(testCase == 3 && testTree->root != NULL)
-    {
-      KOUT::outl("Starting Left Left Deletion test case, with \'",value_1,"\' as starting node");
-    }
-  */
 
   KOUT::outl("Deleting ",value_to_delete,"...");
   testTree->deleteNode(value_to_delete);
-  /*  KOUT::outl("Deleting ",value_2,"...");
-  testTree->deleteNode(value_2);
-  KOUT::outl("Deleting ",value_3,"...");
-  testTree->deleteNode(value_3);*/
-
-  
-  /*  KOUT::outl("InOrder Traversal Should Give \'8 9\' as the result");
-  testTree->printTreeInOrder(testTree->root);
-  while(testTree->root != NULL)
-    {
-      testTree->erase(testTree->root);
-    }
-  delete testTree;
-  */
 
 }
 
