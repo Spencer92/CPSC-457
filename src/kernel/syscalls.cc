@@ -27,15 +27,6 @@
 
 /******* libc functions *******/
 
-extern "C" int sched_setaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
-{
-  
-}
-
-extern "C" int sched_getaffinity(pid_t pid, size_t cpusetsize, cpu_set_t *mask)
-{
-  
-}
 
 
 
@@ -271,8 +262,6 @@ static const syscall_t syscalls[] = {
   syscall_t(semP),
   syscall_t(semV),
   syscall_t(privilege),
-  syscall_t(sched_setaffinity),
-  syscall_t(sched_getaffinity),
   syscall_t(_init_sig_handler)
 };
 

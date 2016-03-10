@@ -560,6 +560,37 @@ Access.o: world/Access.cc \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/devices/Keyboard.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SyncQueues.h
+MyFS.o: world/MyFS.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/world/Access.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SynchronizedArray.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/ManagedArray.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/basics.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/include/kostypes.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/OutputBasic.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/BlockingSync.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/EmbeddedContainers.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Runtime.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/AddressSpace.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/FrameManager.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Bitmap.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/bitmanip.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/MemoryManager.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Memory.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/asmshare.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/SpinLock.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/CPU.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Processor.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/asmdecl.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Descriptors.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/Output.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Paging.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Machine.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Scheduler.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Thread.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/devices/Keyboard.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SyncQueues.h
 LockTest.o: main/LockTest.cc \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/testoptions.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
@@ -1255,6 +1286,37 @@ Access.s: world/Access.cc \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/devices/Keyboard.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SyncQueues.h
+MyFS.s: world/MyFS.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/world/Access.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SynchronizedArray.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/ManagedArray.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/basics.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/include/kostypes.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/OutputBasic.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/BlockingSync.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/EmbeddedContainers.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Runtime.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/AddressSpace.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/FrameManager.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Bitmap.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/bitmanip.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/MemoryManager.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Memory.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/asmshare.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/SpinLock.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/CPU.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Processor.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/asmdecl.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Descriptors.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/Output.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Paging.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Machine.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Scheduler.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Thread.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/devices/Keyboard.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SyncQueues.h
 LockTest.s: main/LockTest.cc \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/testoptions.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
@@ -1920,6 +1982,37 @@ PIT.e: devices/PIT.cc \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Machine.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/devices/PIT.h
 Access.e: world/Access.cc \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/testoptions.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/world/Access.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SynchronizedArray.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/ManagedArray.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/basics.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/include/kostypes.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/OutputBasic.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/BlockingSync.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/EmbeddedContainers.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Runtime.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/AddressSpace.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/FrameManager.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Bitmap.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/bitmanip.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/MemoryManager.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Memory.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/asmshare.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/SpinLock.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/CPU.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Processor.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/asmdecl.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Descriptors.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/kernel/Output.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Paging.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/machine/Machine.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Scheduler.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/Thread.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/devices/Keyboard.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/generic/Buffers.h \
+ /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SyncQueues.h
+MyFS.e: world/MyFS.cc \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/testoptions.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/world/Access.h \
  /home/ugc/spencer.maslen2/cpsc457-kos/src/runtime/SynchronizedArray.h \

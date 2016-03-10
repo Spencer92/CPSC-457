@@ -31,16 +31,13 @@ static void* foobar1(void*) {
 
 static void* foobar2(void*) {
   pthread_mutex_lock(&iolock);
-  printf("hokey\n");
   pthread_mutex_unlock(&iolock);
   for (int i = 0; i < 20; i++) {
     pthread_mutex_lock(&iolock);
-    printf("pokey %d\n", i);
     pthread_mutex_unlock(&iolock);
     for (int j = 0; j < 500000; j++) asm("" ::: "memory");
   }
   pthread_mutex_lock(&iolock);
-  printf("dokey\n");
   int* x = new int;              // no separate memory lock for now...
   pthread_mutex_unlock(&iolock);
   *x = 84;
@@ -65,26 +62,21 @@ int main() {
   void* result;
   pthread_join(t1, &result);
   pthread_mutex_lock(&iolock);
-  printf("foobar1: %i\n", *(int*)result);
   pthread_mutex_unlock(&iolock);
   pthread_t t2, t3;
   pthread_create(&t3, nullptr, foobar3, nullptr);
   pthread_create(&t2, nullptr, foobar2, nullptr);
   pthread_mutex_lock(&iolock);
-  printf("foobar3 created\n");
   pthread_mutex_unlock(&iolock);
   for (int i = SyscallNum::max; i <= 100; i++) syscallStub(i);
   for (int i = 0; i < 10; i++) {
     pthread_mutex_lock(&iolock);
-    printf("working %d\n", i);
     pthread_mutex_unlock(&iolock);
     for (int j = 0; j < 100000; j++) asm("" ::: "memory");
   }
   pthread_join(t2, &result);
   pthread_mutex_destroy(&iolock);         // no conflicts with t3
-  printf("foobar2: %i\n", *(int*)result);
   printf("signal received: 0x%x\n", signum);
   delete (int*)result;
-  printf("goodbye\n");
   return 0;
 };

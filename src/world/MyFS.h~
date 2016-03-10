@@ -1,0 +1,73 @@
+#ifndef MYFS_H
+#define MYFS_H
+
+#include "world/Access.h"
+#include "runtime/SynchronizedArray.h"
+#include "kernel/Output.h"
+#include "devices/Keyboard.h"
+
+#include <map>
+#include <string>
+#include <cerrno>
+#include <unistd.h> // SEEK_SET, SEEK_CUR, SEEK_END
+
+
+
+
+class MyFS : public Access {
+ public:
+  virtual ~MyFS() {}
+  virtual ssize_t pread(void *buf, size_t nbyte, off_t o)
+  {
+    return -EBADF;
+  }
+  virtual ssize_t read(void *buf, size_t nbyte)
+  {
+    return -EBADF;
+  }
+  virtual ssize_t write(const void *buf, size_t nbyte)
+  {
+    return -EBADF;
+  }
+
+
+
+
+
+
+
+
+
+
+
+};
+
+
+
+
+
+struct  OurRamFile{
+  vaddr vma;
+  paddr pma;
+  size_t size;
+  OurRamFile* nextRamFile;
+OurRamFile(vaddr v, paddr p, size_t s, OurRamFile* n) : vma(v), pma(p), size(s), nextRamFile(n=NULL) {}
+};
+
+extern map<string,OurRamFile> ourKernelFS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif

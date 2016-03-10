@@ -18,6 +18,7 @@
 #include "kernel/Multiboot.h"
 #include "kernel/Output.h"
 #include "world/Access.h"
+#include "world/MyFS.h"
 
 #include "extern/multiboot/multiboot2.h"
 
@@ -172,6 +173,7 @@ void Multiboot::readModules(vaddr disp) {
       string cmd = tm->cmdline;
       string name = cmd.substr(0, cmd.find_first_of(' '));
       kernelFS.insert( {name, {tm->mod_start + disp, tm->mod_start, tm->mod_end - tm->mod_start}} );
+      ourKernelFS.insert( {name, {tm->mod_start + disp, tm->mod_start, tm->mod_end - tm->mod_start,NULL }} );
     }
   }
 }
