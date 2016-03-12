@@ -167,13 +167,14 @@ void Multiboot::getMemory(RegionSet<Region<paddr>>& rs) {
 }
 
 void Multiboot::readModules(vaddr disp) {
+  bool isUsed = true;
   FORALLTAGS(tag,mbiStart,mbiEnd) {
     if (tag->type == MULTIBOOT_TAG_TYPE_MODULE) {
       multiboot_tag_module* tm = (multiboot_tag_module*)tag;
       string cmd = tm->cmdline;
       string name = cmd.substr(0, cmd.find_first_of(' '));
       kernelFS.insert( {name, {tm->mod_start + disp, tm->mod_start, tm->mod_end - tm->mod_start}} );
-      ourKernelFS.insert( {name, {tm->mod_start + disp, tm->mod_start, tm->mod_end - tm->mod_start,NULL }} );
+      ourKernelFS.insert( {name, {isUsed, disp,NULL }} );
     }
   }
 }
