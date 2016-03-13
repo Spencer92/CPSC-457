@@ -11,19 +11,18 @@
 #include <cerrno>
 #include <unistd.h> // SEEK_SET, SEEK_CUR, SEEK_END
 
-#define 4096 RAM_SPACE
-#define 256 FILE_SPACE
+#define RAM_SPACE 4096
+#define FILE_SPACE 256
 
 
 struct  OurRamBlock{
+  char* startingAddress;
   bool used;
   unsigned long size;
-  unsigned short blocksUsed;
   OurRamBlock* nextBlock;
-OurRamBlock(bool isUsed,unsigned long blockSize,unsigned short usedBlocks,OurRamBlock* block) : used(isUsed), size(blockSize),nextBlock(block)
+OurRamBlock(char* theStart, bool isUsed,unsigned long blockSize,OurRamBlock* block) : startingAddress(theStart), used(isUsed), size(blockSize),nextBlock(block)
   {
     nextBlock = NULL;
-    usedBlocks = 0;
   }
   /*  vaddr virtualMemoryAddress;
   paddr physicalMemoryAddress;
@@ -36,24 +35,35 @@ extern map<string,OurRamBlock> ourKernelFS;
 
 class MyFS : public Access {
  private:
-  static const unsigned long &startingAddress;
   static char reservedMemory[RAM_SPACE];
-  static const unsigned long &endingAddress;
+  static constexpr char* startingAddress = &reservedMemory[0];
+  static constexpr char* endingAddress = &reservedMemory[RAM_SPACE];
+  const OurRamBlock &theFile;
   
   
  public:
- MyFS(const OurRamFile &theFile) {} 
-  virtual ssize_t pread(void *buffer, size_t nbyte, off_t o);
-  virtual ssize_t read(void *buffer, size_t nbyte);
-  virtual ssize_t write(const void *buffer, size_t nbyte);
-  static unsigned long* getStartingAddress()
+ MyFS(const OurRamBlock &theFile) : theFile(theFile) {}
+
+  virtual ssize_t pread(void *buf, size_t nbyte, off_t o);
+  virtual ssize_t read(void *buf, size_t nbyte);
+  virtual ssize_t write(const void *buf, size_t nbyte);
+  static char* getStartingAddress()
   {
     return startingAddress;
   }
-  static unsigned long* getEndingAddress()
+  static char* getEndingAddress()
   {
     return endingAddress;
   }
+  static char* getReservedMemory(int location)
+  {
+    return &reservedMemory[location];
+  }
+};
+
+
+
+						    
   
 
 

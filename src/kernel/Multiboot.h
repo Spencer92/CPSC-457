@@ -31,6 +31,7 @@ public:
   static vaddr getRSDP()                              __section(".boot.text");
   static void getMemory(RegionSet<Region<paddr>>& rs) __section(".boot.text");
   static void readModules(vaddr disp)                 __section(".boot.text");
+  static void ourReadModules(vaddr displacement)      __section(".boot.text");
 };
 
 #endif /* _Multiboot_h_ */
