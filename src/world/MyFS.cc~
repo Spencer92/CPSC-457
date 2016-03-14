@@ -1,3 +1,0 @@
-#include "world/MyFS.h"
-
-map<string,OurRamFile> ourKernelFS;
