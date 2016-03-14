@@ -28,6 +28,7 @@ static const char* memtype[] __section(".boot.data") = {
   "unknown", "free", "resv", "acpi", "nvs", "bad"
 };
 
+
 #define FORALLTAGS(tag,start,end) \
   for (multiboot_tag* tag = (multiboot_tag*)(start); \
   vaddr(tag) < (end) && tag->type != MULTIBOOT_TAG_TYPE_END; \
@@ -179,8 +180,48 @@ void Multiboot::readModules(vaddr disp) {
 
 }
 
+
+/***************************************************************************
+   Function Name:   ourReadModules
+  
+   Purpose:         To read the incomming files to place them inside a map 
+                    for future use
+  
+   Input Arguments: displacement - where the file starts
+
+   
+   Method notes: The files are places inside of a map for future use
+                 each of these files is assigned a unique ID in order for
+                 a specific file to be accessed. The starting address,
+                 whether or not it's used, and the file size of the file
+                 are also placed within the map.
+
+
+***************************************************************************/
+
+
+
+
+
+
 void Multiboot::ourReadModules(vaddr displacement)
 {
 
+  string getTag;
+  string id;
+  //this doesn't work and we don't know why
+  FORALLTAGS(tag,mbiStart,mbiEnd)//we were told we did not need to understand this, I'm assuming we still need to use it.
+    {
+      if(tag->type == MULTIBOOT_TAG_TYPE_MODULE)
+	{
+	  multiboot_tag_module* theTag =(multiboot_tag_module*) tag;
+	  getTag = theTag->cmdline;
+	  id = getTag.substr(0, getTag.find_first_of(' '));
+	  //this is where ourKernelFS.insert would be placed
+	}
+    }
+
+
+  
 }
 

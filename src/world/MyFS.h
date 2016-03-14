@@ -16,48 +16,63 @@
 
 
 struct  OurRamBlock{
-  char* startingAddress;
+  unsigned long* startingAddress;
   bool used;
   unsigned long size;
   OurRamBlock* nextBlock;
-OurRamBlock(char* theStart, bool isUsed,unsigned long blockSize,OurRamBlock* block) : startingAddress(theStart), used(isUsed), size(blockSize),nextBlock(block)
+OurRamBlock(unsigned long* theStart, bool isUsed,unsigned long blockSize,OurRamBlock* block) : startingAddress(theStart), used(isUsed), size(blockSize),nextBlock(block)
   {
     nextBlock = NULL;
   }
-  /*  vaddr virtualMemoryAddress;
-  paddr physicalMemoryAddress;
-  size_t size;
-  OurRamFile* nextRamFile;
-  OurRamFile(vaddr v, paddr p, size_t s, OurRamFile* n) : virtualMemoryAddress(v), physicalMemoryAddress(p), size(s), nextRamFile(n=NULL) {}*/
 };
 
 extern map<string,OurRamBlock> ourKernelFS;
 
 class MyFS : public Access {
  private:
-  static char reservedMemory[RAM_SPACE];
-  static constexpr char* startingAddress = &reservedMemory[0];
-  static constexpr char* endingAddress = &reservedMemory[RAM_SPACE];
+
   const OurRamBlock &theFile;
-  
+  static char reservedMemory[RAM_SPACE];
+  static constexpr void* startingAddress = (void*) &reservedMemory[0];
+  static constexpr void* endingAddress = &reservedMemory[RAM_SPACE];
+
   
  public:
- MyFS(const OurRamBlock &theFile) : theFile(theFile) {}
+
+ MyFS(const OurRamBlock &theFile) : theFile(theFile)
+  {
+    for(int i = 0; i < RAM_SPACE; i++)
+      {
+	reservedMemory[i] = 0;
+      }
+  }
 
   virtual ssize_t pread(void *buf, size_t nbyte, off_t o);
   virtual ssize_t read(void *buf, size_t nbyte);
   virtual ssize_t write(const void *buf, size_t nbyte);
-  static char* getStartingAddress()
+  virtual OurRamBlock* checkForSpace();
+  static unsigned long getStartingAddress()
   {
-    return startingAddress;
+    return (unsigned long)&startingAddress;
   }
-  static char* getEndingAddress()
+  static unsigned long getEndingAddress()
   {
-    return endingAddress;
+    return (unsigned long)&endingAddress;
   }
-  static char* getReservedMemory(int location)
+  static unsigned long* getReservedMemory(int location)
   {
-    return &reservedMemory[location];
+    void* conversion = (void*)&reservedMemory[location];
+    return (unsigned long*)conversion;
+  }
+  static unsigned long* getStartingAddressPointer()
+  {
+    void* conversion = (void*)&reservedMemory[0];
+    return (unsigned long*)conversion;
+  }
+  static unsigned long* getEndingAddressPointer()
+  {
+    void* conversion = (void*)&reservedMemory[FILE_SPACE];
+    return (unsigned long*)conversion;
   }
 };
 
